@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import { Route, Routes, BrowserRouter } from 'react-router-dom'
+import DetailedWeather from "./Routes/DetailedWeather";
+import Home from "./Routes/Home";
+
 
 function App() {
+  const [place, setPlace] = useState(['Narnaund'])
+  // get places from localStorage
+  useEffect(() => {
+    const myStorage = window.localStorage
+    const val = JSON.parse(myStorage.getItem('placeList'))
+    if (val !== null) {
+      console.log("No previous records found in localStorage")
+      setPlace(val)
+    }
+  }, [])
+
+  // Store places in localStorage
+  useEffect(() => {
+    const myStorage = window.localStorage
+    myStorage.setItem('placeList', JSON.stringify(place))
+  }, [place])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" exact element={<Home place={place} setPlace={setPlace} />} />
+        <Route path="/place/:name" exact element={<DetailedWeather />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
