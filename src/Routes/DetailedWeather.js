@@ -1,7 +1,9 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 function DetailedWeather() {
+    const { name } = useParams()
+    document.title = `${name} Weather`
     const navigate = useNavigate()
     return (
         <div className="min-w-full min-h-screen bg-white dark:bg-gray-900 text-black dark:text-indigo-500 flex flex-col justify-center align-middle">
