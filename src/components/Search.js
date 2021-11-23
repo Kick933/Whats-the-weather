@@ -61,7 +61,7 @@ function Search({ setPlace, place }) {
 
     return (
         <form onSubmit={(e) => submitChange(e)}>
-            <input onFocus={e => handleFocus(e)} onBlur={e => handleBlur(e)} className="h-16 w-64 text-center md:w-96 dark:bg-black focus:outline-none text-lg font-medium dark:focus:bg-gray-800 focus:bg-gray-200 focus:border-2 transform hover:-translate-y-0.5 text-indigo-500 my-4 p-4 shadow-lg focus:border-blue-300 bg-gray-300 rounded-xl mx-auto block" type='text' value={location} onChange={(e) => setLocation(e.target.value)}></input>
+            <input onFocus={e => handleFocus(e)} onBlur={e => handleBlur(e)} className="h-16 w-64 text-center md:w-96 dark:bg-black border-blue-300 dark:border focus:outline-none text-lg font-medium dark:focus:bg-gray-800 focus:bg-gray-200 transform hover:-translate-y-0.5 text-indigo-500 my-4 p-4 shadow-md focus:border-2 bg-gray-200 rounded-xl mx-auto block" type='text' value={location} onChange={(e) => setLocation(e.target.value)}></input>
         </form>
 
     )
