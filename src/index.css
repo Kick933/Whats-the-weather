@@ -4,6 +4,6 @@
 
 @layer components {
 	.weather-card {
-		@apply w-64 h-72 dark:bg-gray-800 dark:text-indigo-400 sm:w-56 transform transition hover:-translate-y-1 bg-indigo-300 rounded-2xl text-center flex flex-col justify-center sm:mx-auto;
+		@apply w-64 h-80 dark:bg-gray-800 dark:text-indigo-400 sm:w-56 transform transition hover:-translate-y-1 bg-indigo-300 rounded-2xl text-center flex flex-col justify-center sm:mx-auto;
 	}
 }

@@ -7,7 +7,7 @@ module.exports = {
   variants: {
     extend: {
       backgroundColor: ['active'],
-      borderWidth: ['focus'],
+      borderWidth: ['dark', 'focus'],
       outline: ['focus']
     },
   },

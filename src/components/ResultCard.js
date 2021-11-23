@@ -21,7 +21,7 @@ function ResultCard({ place, deleteResult }) {
         return (
             <>
 
-                <div className="weather-card m-2 bg-opacity-80 dark:bg-opacity-100 focus:outline-none">
+                <div className="weather-card m-2 bg-opacity-90 dark:bg-opacity-100 focus:outline-none">
                     <Link to={`/place/${weather.name}`}>
                         <p className="text-xl font-semibold">{weather.name}</p>
                         <p className="text-lg font-medium text-gray-600 dark:text-indigo-200">{weather.sys.country}</p>
