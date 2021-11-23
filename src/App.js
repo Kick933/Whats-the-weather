@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
+import Nav from "./components/Nav";
 import DetailedWeather from "./Routes/DetailedWeather";
 import Home from "./Routes/Home";
 
@@ -39,17 +40,9 @@ function App() {
     })
   }
 
-  function changeTheme() {
-    if (document.documentElement.classList.contains('dark')) {
-      localStorage.theme = null
-    } else {
-      localStorage.theme = 'dark'
-    }
-    document.documentElement.classList.toggle('dark')
-  }
   return (
     <BrowserRouter>
-      <div onClick={() => changeTheme()} className="cursor-pointer absolute top-8 right-4 bg-black dark:bg-yellow-400 w-8 h-8 rounded-full"></div>
+      <Nav />
       <Routes>
         <Route path="/" exact element={<Home place={place} deleteResult={deleteResult} setPlace={setPlace} />} />
         <Route path="/place/:name" exact element={<DetailedWeather />} />
