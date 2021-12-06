@@ -1,28 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { getWeather } from '../helpers/getWeather'
+import { remove } from '../state/placeList'
+import { useDispatch } from 'react-redux'
 
-function ResultCard({ place, deleteResult }) {
-    const [weather, setWeather] = useState({})
+function ResultCard({ place, loading }) {
+    const dispatch = useDispatch()
 
-    function handleDelete(e) {
-        deleteResult(place)
-    }
-
-    useEffect(() => {
-        let isSubscribed = true
-        getWeather(place)
-            .then(res => (isSubscribed ? setWeather(res) : null))
-            .catch(err => console.log(err.message))
-
-        return () => (isSubscribed = false)
-    }, [place])
-    if (weather.cod === 200) {
+    if (place.weather) {
+        const weather = place.weather
         return (
             <>
-
                 <div className="weather-card m-2 bg-opacity-90 dark:bg-opacity-100 focus:outline-none">
-                    <Link to={`/place/${weather.name}`}>
+                    <Link to={{ pathname: `/place/${place.searchName}` }}>
                         <p className="text-xl font-semibold">{weather.name}</p>
                         <p className="text-lg font-medium text-gray-600 dark:text-indigo-200">{weather.sys.country}</p>
                         <p className="text-sm mt-4 text-gray-600 dark:text-indigo-200">Temperature</p>
@@ -30,16 +19,15 @@ function ResultCard({ place, deleteResult }) {
                         <p className="text-sm mt-4 text-gray-600 dark:text-indigo-200">Feels like</p>
                         <p className="text-3xl">{weather.main.feels_like} &#8451;</p>
                     </Link>
-                    <button className="w-16 h-8 bg-red-500 hover:bg-red-600 mx-auto mt-4 focus:outline-none focus:bg-red-400 active:bg-red-400 dark:text-black text-gray-200 rounded-md" onClick={() => handleDelete(place)}>Delete</button>
+                    <button className="w-16 h-8 bg-red-500 hover:bg-red-600 mx-auto mt-4 focus:outline-none focus:bg-red-400 active:bg-red-400 dark:text-black text-gray-200 rounded-md" onClick={() => dispatch(remove(place.searchName))}>Delete</button>
                 </div>
-
             </>
         )
     } else {
         return (
-            <div className="weather-card  bg-opacity-80 dark:bg-opacity-100 focus:outline-none">
-                <p className="text-xl font-semibold">{place}</p>
-                <p className="text-lg text-gray-400">Loading....</p>
+            <div className="weather-card  bg-opacity-80 dark:bg-opacity-100 focus:outline-none" >
+                <p className="text-xl font-semibold">{place.searchName.toUpperCase()}</p>
+                <p className="text-base p-4 text-gray-400">{loading ? "Loading...." : "Something went wrong. Check your Internet connection."}</p>
             </div>
         )
     }
