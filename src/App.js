@@ -1,26 +1,21 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import Nav from "./components/Nav";
 import DetailedWeather from "./Routes/DetailedWeather";
 import Home from "./Routes/Home";
+import { useSelector, useDispatch } from 'react-redux'
+import { getWeather } from './helpers/getWeather'
+import { setWeather } from './state/placeList'
 
 
 function App() {
-  const [place, setPlace] = useState(['Narnaund'])
-  // get places from localStorage
-  useEffect(() => {
-    const myStorage = window.localStorage
-    const val = JSON.parse(myStorage.getItem('placeList'))
-    if (val !== null) {
-      setPlace(val)
-    }
-    console.log("No previous records found in localStorage")
-  }, [])
+  const dispatch = useDispatch()
+  const place = useSelector(state => state.weather.placeList)
 
   // Store places in localStorage
   useEffect(() => {
     const myStorage = window.localStorage
-    myStorage.setItem('placeList', JSON.stringify(place))
+    myStorage.setItem('placeList', JSON.stringify(place.map(item => item.searchName)))
   }, [place])
 
   //Checks for local preference for theme.
@@ -31,20 +26,31 @@ function App() {
       }
     }
   }, [])
-  // Delete a card.
-  function deleteResult(arg) {
-    setPlace(t => {
-      return [
-        ...t.filter(item => item !== arg)
-      ]
+
+  // Fetch weather for each location
+  useEffect(() => {
+    place.forEach(item => {
+      const fetchWeather = async (place) => {
+        if (!place.weather) {
+          getWeather(place.searchName)
+            .then(res => {
+              dispatch(setWeather({
+                searchName: place.searchName,
+                weather: res
+              }))
+            })
+            .catch(err => console.log(err))
+        }
+      }
+      fetchWeather(item)
     })
-  }
+  }, [place, dispatch])
 
   return (
     <BrowserRouter>
       <Nav />
       <Routes>
-        <Route path="/" exact element={<Home place={place} deleteResult={deleteResult} setPlace={setPlace} />} />
+        <Route path="/" exact element={<Home place={place} />} />
         <Route path="/place/:name" exact element={<DetailedWeather />} />
       </Routes>
     </BrowserRouter>
