@@ -1,42 +1,51 @@
 import React, { useState } from 'react'
 import { getWeather } from '../helpers/getWeather'
+import { useSelector, useDispatch } from 'react-redux'
+import { add } from '../state/placeList'
+function Search() {
+    const place = useSelector(state => state.weather.placeList)
 
-function Search({ setPlace, place }) {
+    const dispatch = useDispatch()
+
     const [location, setLocation] = useState('Enter your city')
+
     let searching = false
     const submitChange = (e) => {
         e.preventDefault()
         const term = location
         setLocation('Searching...')
-        if (searching) return
+        if (searching) alert("Already processing a query.")
         searching = true
-        const fetchData = () => (
-            getWeather(term)
-                .then(res => res.cod === 200 ? true : false)
-                .catch(e => console.log(e.message))
-        )
+
         const checkDuplicates = () => {
             if (!place.length) return true
-            const arr = place.filter(item => item.toLowerCase() !== term.toLowerCase())
+            const arr = place.filter(item => item.searchName.toLowerCase() !== term.toLowerCase())
             if (arr.length === place.length) return true
             alert("You are searching for a duplicate.")
         }
+        const fetchData = () => (
+            getWeather(term)
+                .then(res => {
+                    if (res.cod === 200) {
+                        if (checkDuplicates())
+                            console.log(res)
+                        dispatch(add({
+                            searchName: term,
+                            weather: res
+                        }))
+                        return true
+                    }
+                })
+                .catch(e => console.log(e.message))
+        )
         const addLocation = async () => {
-            if (checkDuplicates()) {
-                const val = await fetchData()
-                if (val) {
-                    setLocation("Saving the place...")
-                    setPlace(t => {
-                        return [
-                            ...t,
-                            term
-                        ]
-                    })
-                    setTimeout(() => { setLocation("Enter your city") }, 250)
-                } else {
-                    alert("No such place found.")
-                    setLocation('Enter your city')
-                }
+            const val = await fetchData()
+            if (val) {
+                setLocation("Saving the place...")
+                setTimeout(() => { setLocation("Enter your city") }, 250)
+            } else {
+                alert("No such place found.")
+                setLocation('Enter your city')
             }
         }
         addLocation()
@@ -50,6 +59,7 @@ function Search({ setPlace, place }) {
             setLocation('')
         }
     }
+
     const handleBlur = e => {
         const target = e.target
         if (target.value === '') {
