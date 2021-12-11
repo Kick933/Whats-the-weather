@@ -29,11 +29,13 @@ function App() {
 
   // Fetch weather for each location
   useEffect(() => {
+    console.log("Place changed")
     place.forEach(item => {
       const fetchWeather = async (place) => {
         if (!place.weather) {
           getWeather(place.searchName)
             .then(res => {
+              console.log(res)
               dispatch(setWeather({
                 searchName: place.searchName,
                 weather: res
@@ -44,7 +46,7 @@ function App() {
       }
       fetchWeather(item)
     })
-  }, [place, dispatch])
+  }, [])
 
   return (
     <BrowserRouter>
