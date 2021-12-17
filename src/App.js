@@ -20,8 +20,10 @@ function App() {
 
   //Checks for local preference for theme.
   useEffect(() => {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      if (localStorage.theme === 'dark' || localStorage.theme === null) {
+    if (localStorage.theme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      if (localStorage.theme === 'dark') {
         document.documentElement.classList.add('dark')
       }
     }
@@ -38,10 +40,16 @@ function App() {
               console.log(res)
               dispatch(setWeather({
                 searchName: place.searchName,
-                weather: res
+                weather: res,
+                status: 'Fulfilled'
               }))
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+              dispatch(setWeather({
+                status: 'Rejected'
+              }))
+            }
+            )
         }
       }
       fetchWeather(item)
