@@ -25,9 +25,9 @@ function ResultCard({ place, loading }) {
         )
     } else {
         return (
-            <div className="weather-card  bg-opacity-80 dark:bg-opacity-100 focus:outline-none" >
+            <div className="weather-card m-2  bg-opacity-80 dark:bg-opacity-100 focus:outline-none" >
                 <p className="text-xl font-semibold">{place.searchName.toUpperCase()}</p>
-                <p className="text-base p-4 text-gray-400">{loading ? "Loading...." : "Something went wrong. Check your Internet connection."}</p>
+                <p className="text-base p-4 text-gray-400">{loading ? "Loading...." : "Something went wrong."}</p>
             </div>
         )
     }
