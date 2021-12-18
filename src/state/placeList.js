@@ -7,7 +7,8 @@ const getData = () => {
     if (val !== null) {
         return val.map(item => {
             return {
-                searchName: item
+                searchName: item,
+                status: 'Idle'
             }
         })
     }
@@ -26,12 +27,37 @@ export const placeList = createSlice(
         reducers: {
             setWeather: (state, action) => {
                 const newState = state.placeList.map(item => {
-                    if (item.searchName === action.payload.searchName) {
+                    if (item.searchName.toLowerCase() === action.payload.searchName.toLowerCase()) {
                         return {
                             searchName: action.payload.searchName,
-                            weather: action.payload.weather
+                            weather: action.payload.weather,
+                            status: action.payload.status
                         }
                     } else return item
+                })
+                state.placeList = newState
+            },
+            setPending: (state, action) => {
+                const newState = state.placeList.map(item => {
+                    if (item.searchName.toLowerCase() === action.payload.searchName.toLowerCase()) {
+                        return {
+                            searchName: item.searchName,
+                            status: 'Pending'
+                        }
+                    }
+                    return item
+                })
+                state.placeList = newState
+            },
+            setRejected: (state, action) => {
+                const newState = state.placeList.map(item => {
+                    if (item.searchName.toLowerCase() === action.payload.searchName.toLowerCase()) {
+                        return {
+                            searchName: item.searchName,
+                            status: 'Rejected'
+                        }
+                    }
+                    return item
                 })
                 state.placeList = newState
             },
@@ -50,5 +76,5 @@ export const placeList = createSlice(
     }
 )
 
-export const { add, remove, setWeather } = placeList.actions
+export const { add, remove, setWeather, setPending, setRejected } = placeList.actions
 export default placeList.reducer

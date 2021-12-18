@@ -5,8 +5,8 @@ import { useDispatch } from 'react-redux'
 
 function ResultCard({ place, loading }) {
     const dispatch = useDispatch()
-
-    if (place.weather) {
+    console.log(place.weather)
+    if (place.status === 'Fulfilled') {
         const weather = place.weather
         return (
             <>
@@ -27,7 +27,7 @@ function ResultCard({ place, loading }) {
         return (
             <div className="weather-card m-2  bg-opacity-80 dark:bg-opacity-100 focus:outline-none" >
                 <p className="text-xl font-semibold">{place.searchName.toUpperCase()}</p>
-                <p className="text-base p-4 text-gray-400">{loading ? "Loading...." : "Something went wrong."}</p>
+                <p className="text-base p-4 text-gray-400">{place.status === 'Rejected' ? "Something went wrong" : "Loading...."}</p>
             </div>
         )
     }

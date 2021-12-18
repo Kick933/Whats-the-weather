@@ -5,7 +5,7 @@ import DetailedWeather from "./Routes/DetailedWeather";
 import Home from "./Routes/Home";
 import { useSelector, useDispatch } from 'react-redux'
 import { getWeather } from './helpers/getWeather'
-import { setWeather } from './state/placeList'
+import { setWeather, setPending, setRejected } from './state/placeList'
 
 
 function App() {
@@ -31,30 +31,26 @@ function App() {
 
   // Fetch weather for each location
   useEffect(() => {
-    console.log("Place changed")
-    place.forEach(item => {
-      const fetchWeather = async (place) => {
-        if (!place.weather) {
-          getWeather(place.searchName)
-            .then(res => {
-              console.log(res)
-              dispatch(setWeather({
-                searchName: place.searchName,
-                weather: res,
-                status: 'Fulfilled'
-              }))
+    place.forEach(place => {
+      if (place.status === 'Idle') {
+        dispatch(setPending({ searchName: place.searchName }))
+        getWeather(place.searchName)
+          .then(res => {
+            dispatch(setWeather({
+              searchName: place.searchName,
+              status: 'Fulfilled',
+              weather: res
+            }))
+          })
+          .catch(err => {
+            setRejected({
+              searchName: place.searchName
             })
-            .catch(err => {
-              dispatch(setWeather({
-                status: 'Rejected'
-              }))
-            }
-            )
-        }
+            console.log(err)
+          })
       }
-      fetchWeather(item)
     })
-  }, [])
+  }, [place, dispatch])
 
   return (
     <BrowserRouter>
