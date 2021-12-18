@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 
 function ResultCard({ place, loading }) {
     const dispatch = useDispatch()
-    console.log(place.weather)
     if (place.status === 'Fulfilled') {
         const weather = place.weather
         return (
