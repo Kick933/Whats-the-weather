@@ -1,27 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { fetchOneCall } from '../helpers/oneCall'
+import Loading from '../components/Loading'
 
 function DetailedWeather() {
     const { name } = useParams()
     const [oneCall, setOneCall] = useState(null)
+    const [subscribed, setSubscribed] = useState(true)
     document.title = `${name} Weather`
     const navigate = useNavigate()
     const [place] = useSelector(state => state.weather.placeList.filter(item => item.searchName.toLowerCase() === name.toLowerCase()))
-    if (place.weather && place.weather.hasOwnProperty('coord') && !oneCall) {
-        const lat = place.weather.coord.lat
-        const lon = place.weather.coord.lon
-        fetchOneCall(lat, lon)
-            .then(res => setOneCall(res))
-            .catch(err => console.log(err.message))
-    }
+    useEffect(() => {
+        if (place.weather && place.weather.hasOwnProperty('coord') && !oneCall) {
+            const lat = place.weather.coord.lat
+            const lon = place.weather.coord.lon
+            fetchOneCall(lat, lon)
+                .then(res => { if (subscribed) setOneCall(res) })
+                .catch(err => console.log(err.message))
+        }
+        return () => {
+            setSubscribed(false)
+        }
+    }, [place, oneCall, subscribed])
+
     if (!oneCall) {
         return (
-            <div className="min-w-full min-h-screen bg-white dark:bg-gray-900 text-black dark:text-indigo-500 flex flex-col justify-center items-center">
-                <p className="text-xl font-medium block w-full text-center">Loading...</p>
-                <p className="text-xl font-medium block w-full text-center">Please wait....</p>
-            </div>
+            <Loading />
         )
     } else {
         return (
