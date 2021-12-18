@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { fetchOneCall } from '../helpers/oneCall'
-import Loading from '../components/Loading'
 
 function DetailedWeather() {
     const { name } = useParams()
@@ -26,7 +25,7 @@ function DetailedWeather() {
 
     if (!oneCall) {
         return (
-            <Loading />
+            <p className="m-4 text-4xl font-serif font-extrabold">Loading</p>
         )
     } else {
         return (
