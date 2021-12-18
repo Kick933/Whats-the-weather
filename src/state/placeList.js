@@ -64,7 +64,8 @@ export const placeList = createSlice(
             add: (state, action) => {
                 state.placeList.unshift({
                     searchName: action.payload.searchName,
-                    weather: action.payload.weather
+                    weather: action.payload.weather,
+                    status: action.payload.status
                 })
             },
             remove: (state, action) => {

@@ -27,12 +27,13 @@ function Search() {
             getWeather(term)
                 .then(res => {
                     if (res.cod === 200) {
-                        if (checkDuplicates())
-                            console.log(res)
-                        dispatch(add({
-                            searchName: term,
-                            weather: res
-                        }))
+                        if (checkDuplicates()) {
+                            dispatch(add({
+                                searchName: term,
+                                weather: res,
+                                status: 'Fulfilled'
+                            }))
+                        }
                         return true
                     }
                 })
