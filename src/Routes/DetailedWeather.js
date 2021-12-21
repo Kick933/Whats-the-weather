@@ -8,7 +8,7 @@ function DetailedWeather() {
     const { name } = useParams()
     const [oneCall, setOneCall] = useState(null)
     const [subscribed, setSubscribed] = useState(true)
-    document.title = `${name} Weather`
+    document.title = `${name.split('').map((a, index) => index === 0 ? a.toUpperCase() : a).join('')} Weather`
     const navigate = useNavigate()
     const [place] = useSelector(state => state.weather.placeList.filter(item => item.searchName.toLowerCase() === name.toLowerCase()))
     // Fetch OneCall data
