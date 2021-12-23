@@ -3,19 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { fetchOneCall } from '../helpers/oneCall'
 import { dateConvert } from '../helpers/dateConvert'
+import HorizontalFlex from '../components/HorizontalFlex'
 
 function DetailedWeather() {
     const { name } = useParams()
     const [oneCall, setOneCall] = useState(null)
     const [subscribed, setSubscribed] = useState(true)
-    document.title = `${name.split('').map((a, index) => index === 0 ? a.toUpperCase() : a).join('')} Weather`
+    document.title = `${name} Weather`
     const navigate = useNavigate()
     const [place] = useSelector(state => state.weather.placeList.filter(item => item.searchName.toLowerCase() === name.toLowerCase()))
     // Fetch OneCall data
     useEffect(() => {
         if (place === undefined || place.weather === undefined) {
             navigate('/')
-        } else if (place.weather.status === 'Fulfilled' & !oneCall) {
+        } else if (place.status === 'Fulfilled' && !oneCall) {
             const lat = place.weather.coord.lat
             const lon = place.weather.coord.lon
             fetchOneCall(lat, lon)
@@ -25,7 +26,7 @@ function DetailedWeather() {
         return () => {
             setSubscribed(false)
         }
-    }, [place, oneCall, subscribed, navigate])
+    }, [place, navigate, oneCall, subscribed])
 
     if (place !== undefined && place.weather !== undefined && place.status === 'Fulfilled') {
         const placeName = place.searchName.split('').map((text, index) => index === 0 ? text.toUpperCase() : text).join('')
@@ -68,6 +69,7 @@ function DetailedWeather() {
                         <p className='text-3xl m-3 text-center'>{sunset}</p>
                     </div>
                 </div>
+                {!oneCall ? null : <HorizontalFlex hourly={oneCall.hourly} text="Hourly Forecast" />}
                 <button onClick={() => navigate('/')} className="bg-red-400 dark:bg-blue-400 hover:bg-red-500 dark:hover:bg-blue-500 active:bg-red-600 dark:active:bg-blue-600 my-4 text-black w-20 block mx-auto rounded-xl p-2">Go Back</button>
             </div>
         )
