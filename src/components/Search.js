@@ -29,7 +29,7 @@ function Search() {
                     if (res.cod === 200) {
                         if (checkDuplicates()) {
                             dispatch(add({
-                                searchName: term,
+                                searchName: term.split('').map((a, i) => i === 0 ? a.toUpperCase() : a.toLowerCase()).join(''),
                                 weather: res,
                                 status: 'Fulfilled'
                             }))
