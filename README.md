@@ -4,12 +4,12 @@ Track weather for multiple locations  with card based UI [here](https://weatherb
 
 ## Features -:
 
--[X] Search for a city.
--[X] Have multiple City Weather cards.
--[X] Delete a City card.
--[X] Save tracked locations locally in localStorage.
--[X] View Detailed weather for a location.
--[ ] View forecast for a location.
+- [X] Search for a city.
+- [X] Have multiple City Weather cards.
+- [X] Delete a City card.
+- [X] Save tracked locations locally in localStorage.
+- [X] View Detailed weather for a location.
+- [X] View forecast for a location.
 
 ## Credits-:
 * TailwindCSS
