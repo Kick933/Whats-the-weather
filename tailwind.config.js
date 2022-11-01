@@ -1,15 +1,9 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: 'class', // or 'media' or 'class'
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./index.html"],
   theme: {
     extend: {},
   },
-  variants: {
-    extend: {
-      backgroundColor: ['active'],
-      borderWidth: ['dark', 'focus'],
-      outline: ['focus']
-    },
-  },
+  darkMode: 'class',
   plugins: [],
 }
